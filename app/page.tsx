@@ -1,101 +1,162 @@
-import Image from "next/image";
+import { Button } from "@/components/ui/button"
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Brain, BookOpen, Trophy, Zap, Users, Target } from "lucide-react"
+import Link from "next/link"
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen bg-gradient-to-br from-background via-card to-background">
+      {/* Header */}
+      <header className="border-b bg-background/80 backdrop-blur-sm sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Brain className="h-8 w-8 text-primary" />
+            <span className="text-xl font-bold text-foreground">LearnAI</span>
+          </div>
+          <nav className="hidden md:flex items-center gap-6">
+            <Link href="/courses" className="text-muted-foreground hover:text-foreground transition-colors">
+              Courses
+            </Link>
+            <Link href="/dashboard" className="text-muted-foreground hover:text-foreground transition-colors">
+              Dashboard
+            </Link>
+            <Link href="/create" className="text-muted-foreground hover:text-foreground transition-colors">
+              Create
+            </Link>
+          </nav>
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" asChild>
+              <Link href="/auth/signin">Sign In</Link>
+            </Button>
+            <Button asChild>
+              <Link href="/auth/signup">Get Started</Link>
+            </Button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </header>
+
+      {/* Hero Section */}
+      <section className="container mx-auto px-4 py-16 text-center">
+        <div className="max-w-4xl mx-auto">
+          <Badge variant="secondary" className="mb-4">
+            <Zap className="h-3 w-3 mr-1" />
+            Powered by AI
+          </Badge>
+          <h1 className="text-4xl md:text-6xl font-bold text-balance mb-6">
+            Learn Anything with
+            <span className="text-primary"> AI-Powered</span> Courses
+          </h1>
+          <p className="text-xl text-muted-foreground text-balance mb-8 max-w-2xl mx-auto">
+            Create custom learning paths, get personalized AI tutoring, and track your progress with gamified learning
+            experiences.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" asChild>
+              <Link href="/auth/signup">Start Learning Free</Link>
+            </Button>
+            <Button size="lg" variant="outline" asChild>
+              <Link href="/demo">Watch Demo</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Grid */}
+      <section className="container mx-auto px-4 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4">Everything You Need to Learn</h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Our AI-powered platform adapts to your learning style and helps you master any subject.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader>
+              <Brain className="h-10 w-10 text-primary mb-2" />
+              <CardTitle>AI Course Generation</CardTitle>
+              <CardDescription>
+                Generate complete courses on any topic with structured lessons, quizzes, and assignments.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader>
+              <BookOpen className="h-10 w-10 text-accent mb-2" />
+              <CardTitle>Interactive Learning</CardTitle>
+              <CardDescription>
+                Engage with dynamic content, videos, and hands-on exercises tailored to your pace.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader>
+              <Trophy className="h-10 w-10 text-chart-5 mb-2" />
+              <CardTitle>Gamified Progress</CardTitle>
+              <CardDescription>
+                Earn XP, unlock achievements, and maintain learning streaks to stay motivated.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader>
+              <Target className="h-10 w-10 text-chart-1 mb-2" />
+              <CardTitle>Personalized Paths</CardTitle>
+              <CardDescription>AI adapts your learning journey based on your progress and preferences.</CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader>
+              <Users className="h-10 w-10 text-chart-2 mb-2" />
+              <CardTitle>AI Tutoring</CardTitle>
+              <CardDescription>
+                Get instant help and explanations from your personal AI tutor available 24/7.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+
+          <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader>
+              <Zap className="h-10 w-10 text-chart-4 mb-2" />
+              <CardTitle>Smart Analytics</CardTitle>
+              <CardDescription>
+                Track your learning patterns and get insights to optimize your study sessions.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-primary/5 py-16">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Learning?</h2>
+          <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
+            Join thousands of learners who are already using AI to master new skills and advance their careers.
+          </p>
+          <Button size="lg" asChild>
+            <Link href="/auth/signup">Start Your Journey</Link>
+          </Button>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t bg-card/50 py-8">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center justify-between">
+            <div className="flex items-center gap-2 mb-4 md:mb-0">
+              <Brain className="h-6 w-6 text-primary" />
+              <span className="font-semibold">LearnAI</span>
+            </div>
+            <p className="text-sm text-muted-foreground">© 2024 LearnAI. Empowering learners with AI technology.</p>
+          </div>
+        </div>
       </footer>
     </div>
-  );
+  )
 }
