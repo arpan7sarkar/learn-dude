@@ -26,9 +26,6 @@ export default function HomePage() {
             </Link>
           </nav>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" asChild>
-              <Link href="/auth/signin">Sign In</Link>
-            </Button>
             <Button asChild>
               <Link href="/auth/signup">Get Started</Link>
             </Button>
