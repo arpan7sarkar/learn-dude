@@ -38,7 +38,7 @@ In today's fast-paced world, traditional learning methods often fall short. Lear
 - Tailwind CSS for styling
 
 **AI & Machine Learning**
-- OpenAI GPT models for content generation
+- Gemini models for content generation
 - YouTube Data API for video curation
 - Natural Language Processing for content optimization
 
@@ -80,7 +80,7 @@ Ensure you have the following installed:
    
    Configure your environment variables:
    ```env
-   OPENAI_API_KEY=your_openai_api_key_here
+   Gemini_API_KEY=gemini_api_key_here
    YOUTUBE_API_KEY=your_youtube_api_key_here
    NEXTAUTH_SECRET=your_nextauth_secret_here
    ```
@@ -208,7 +208,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- **OpenAI** for providing the GPT API that powers our course generation
+- **GeminiAI** for providing the GPT API that powers our course generation
 - **YouTube** for their comprehensive video content and API
 - **Next.js Team** for the amazing React framework
 - **Vercel** for seamless deployment and hosting
