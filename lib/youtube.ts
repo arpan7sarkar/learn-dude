@@ -74,28 +74,42 @@ export async function searchYouTubeVideos(query: string, maxResults = 5): Promis
   }
 }
 
+
 export async function findVideosForChapter(
   chapterTitle: string,
   topics: string[],
   category: string,
 ): Promise<YouTubeVideo[]> {
-  const queries = [
+  // Generate more specific and varied search queries
+  const queries: string[] = [
     `${chapterTitle} ${category} tutorial`,
-    `${topics[0]} ${category} explained`,
-    `${chapterTitle} beginner guide`,
+    `${chapterTitle} for beginners`,
   ]
 
-  const allVideos: YouTubeVideo[] = []
-
-  for (const query of queries) {
-    const videos = await searchYouTubeVideos(query, 2)
-    allVideos.push(...videos)
+  // Add queries for each topic to get more targeted results
+  if (topics && topics.length > 0) {
+    topics.slice(0, 2).forEach((topic) => {
+      queries.push(`${topic} in ${chapterTitle} explained`)
+      queries.push(`${topic} ${category} tutorial`)
+    })
   }
 
-  // Remove duplicates and return top 3
-  const uniqueVideos = allVideos.filter((video, index, self) => index === self.findIndex((v) => v.id === video.id))
+  const allVideos: YouTubeVideo[] = []
+  const videoIds = new Set<string>()
 
-  return uniqueVideos.slice(0, 3)
+  // Fetch 2 videos for each query to build a diverse pool
+  for (const query of queries) {
+    const videos = await searchYouTubeVideos(query, 2)
+    videos.forEach((video) => {
+      if (!videoIds.has(video.id)) {
+        allVideos.push(video)
+        videoIds.add(video.id)
+      }
+    })
+  }
+
+  // Return the top 3 unique videos
+  return allVideos.slice(0, 3)
 }
 
 function formatDuration(duration: string): string {
@@ -123,3 +137,5 @@ function formatViewCount(viewCount: string): string {
   }
   return `${count} views`
 }
+
+
