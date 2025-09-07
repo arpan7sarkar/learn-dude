@@ -63,7 +63,7 @@ export async function generateCourseStructure(courseData: {
     throw new Error("Gemini AI is not configured. Please set GEMINI_API_KEY environment variable.")
   }
 
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
 
   const prompt = `
 Create a comprehensive course structure for the following course:
@@ -150,7 +150,7 @@ export async function generateLessonContent(
     throw new Error("Gemini AI is not configured. Please set GEMINI_API_KEY environment variable.")
   }
 
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
 
   const prompt = `
 Generate detailed lesson content for the following lesson:
@@ -194,7 +194,7 @@ export async function generateQuiz(chapterTitle: string, chapterTopics: string[]
     throw new Error("Gemini AI is not configured. Please set GEMINI_API_KEY environment variable.")
   }
 
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" })
 
   const prompt = `
 Create a quiz for the following chapter:
