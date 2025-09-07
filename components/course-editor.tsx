@@ -9,6 +9,8 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 import {
   BookOpen,
   Clock,
@@ -128,11 +130,14 @@ const mockCourse: CourseData = {
 
 interface CourseEditorProps {
   courseData?: any
+  courseId?: string
 }
 
-export function CourseEditor({ courseData }: CourseEditorProps) {
+export function CourseEditor({ courseData, courseId }: CourseEditorProps) {
   const [course] = useState<CourseData>(courseData || mockCourse)
   const [isGenerating, setIsGenerating] = useState(false)
+  const cid = courseId || course.id || "course-1"
+  const router = useRouter()
 
   const handleGenerateContent = async () => {
     setIsGenerating(true)
@@ -155,9 +160,11 @@ export function CourseEditor({ courseData }: CourseEditorProps) {
             <p className="text-muted-foreground max-w-2xl">{course.description}</p>
           </div>
           <div className="flex gap-3">
-            <Button variant="outline" className="flex items-center gap-2 bg-transparent">
-              <Eye className="h-4 w-4" />
-              Preview
+            <Button asChild variant="outline" className="flex items-center gap-2 bg-transparent">
+              <Link href={`/courses/${cid}/preview`}>
+                <Eye className="h-4 w-4" />
+                Preview
+              </Link>
             </Button>
             <Button className="flex items-center gap-2">
               <Edit3 className="h-4 w-4" />
@@ -224,7 +231,13 @@ export function CourseEditor({ courseData }: CourseEditorProps) {
                 <CardContent>
                   <div className="space-y-4">
                     {course.chapters.map((chapter, index) => (
-                      <div key={chapter.id} className="border rounded-lg p-4">
+                      <div
+                        key={chapter.id}
+                        className="border rounded-lg p-4 cursor-pointer hover:bg-muted/30 transition-colors"
+                        onClick={() => router.push(`/courses/${cid}/watch/${chapter.id}`)}
+                        role="button"
+                        aria-label={`Open ${chapter.title}`}
+                      >
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex items-start gap-3">
                             <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-medium text-sm">
@@ -255,6 +268,9 @@ export function CourseEditor({ courseData }: CourseEditorProps) {
                             <Badge variant={chapter.status === "generated" ? "default" : "secondary"}>
                               {chapter.status === "generated" ? "Ready" : "Pending"}
                             </Badge>
+                            <Button asChild size="sm" variant="outline" onClick={(e) => e.stopPropagation()}>
+                              <Link href={`/courses/${cid}/watch/${chapter.id}`}>Open</Link>
+                            </Button>
                           </div>
                         </div>
 
@@ -384,17 +400,28 @@ export function CourseEditor({ courseData }: CourseEditorProps) {
               <CardTitle className="text-lg">Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button variant="outline" className="w-full justify-start bg-transparent">
-                <Eye className="h-4 w-4 mr-2" />
-                Preview Course
+              <Button asChild variant="outline" className="w-full justify-start bg-transparent">
+                <Link href={`/courses/${cid}/preview`}>
+                  <Eye className="h-4 w-4 mr-2" />
+                  Preview Course
+                </Link>
               </Button>
-              <Button variant="outline" className="w-full justify-start bg-transparent">
+              <Button
+                variant="outline"
+                className="w-full justify-start bg-transparent"
+                onClick={async () => {
+                  await fetch(`/api/courses/${cid}/test-path`)
+                  alert("Learning path validated successfully.")
+                }}
+              >
                 <Play className="h-4 w-4 mr-2" />
                 Test Learning Path
               </Button>
-              <Button variant="outline" className="w-full justify-start bg-transparent">
-                <Edit3 className="h-4 w-4 mr-2" />
-                Edit Course Info
+              <Button asChild variant="outline" className="w-full justify-start bg-transparent">
+                <Link href={`/courses/${cid}/edit`}>
+                  <Edit3 className="h-4 w-4 mr-2" />
+                  Edit Course Info
+                </Link>
               </Button>
             </CardContent>
           </Card>

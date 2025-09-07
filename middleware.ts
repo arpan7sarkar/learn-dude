@@ -1,6 +1,19 @@
-import { clerkMiddleware } from '@clerk/nextjs/server'
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
-export default clerkMiddleware()
+// Allow these routes to be accessed without authentication
+const isPublicRoute = createRouteMatcher([
+  '/api/courses(.*)',
+  '/api/generate-course',
+])
+
+export default clerkMiddleware((auth, req) => {
+  if (isPublicRoute(req)) {
+    // Do not enforce authentication on public routes
+    return
+  }
+  // Protect all other routes
+  auth.protect()
+})
 
 export const config = {
   matcher: [
