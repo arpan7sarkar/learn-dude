@@ -18,6 +18,8 @@ export default function WatchChapterPage() {
   const generatingRef = useRef<Set<string>>(new Set())
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [chapterDoc, setChapterDoc] = useState<string>("")
+  const [chapterDocLoading, setChapterDocLoading] = useState<boolean>(false)
 
   useEffect(() => {
     async function load() {
@@ -96,6 +98,43 @@ export default function WatchChapterPage() {
       })
     }
     void ensureContent()
+  }, [chapter?.id, courseId])
+
+  // Fetch full AI-generated chapter document when chapter changes
+  useEffect(() => {
+    async function loadChapterDoc() {
+      if (!chapter) return
+      try {
+        setChapterDocLoading(true)
+        setChapterDoc("")
+        const res = await fetch("/api/generate-lesson-content", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chapter,
+            course: {
+              title: `Course ${courseId}`,
+              description: "",
+              estimatedDuration: "",
+              prerequisites: [],
+              learningObjectives: [],
+              chapters: [chapter],
+            },
+            difficulty: "Beginner",
+          }),
+        })
+        if (!res.ok) throw new Error(`chapter-doc ${res.status}`)
+        const data = await res.json()
+        const content: string | undefined = data?.content || data?.chapterId ? data?.content : undefined
+        // The endpoint returns { success, chapterId, content }
+        setChapterDoc(typeof data?.content === "string" ? data.content : "")
+      } catch (err) {
+        console.error("Failed to load chapter document", err)
+      } finally {
+        setChapterDocLoading(false)
+      }
+    }
+    void loadChapterDoc()
   }, [chapter?.id, courseId])
 
   const goNext = () => {
@@ -192,6 +231,20 @@ export default function WatchChapterPage() {
 
         {/* Content area: Table of Contents + All Parts sequentially */}
         <div className="flex-1 p-6 overflow-y-auto">
+          {/* AI-Generated Chapter Document */}
+          <Card className="mb-6">
+            <CardContent className="p-6">
+              <h2 className="text-lg font-semibold mb-3">Chapter Content (AI)</h2>
+              {chapterDocLoading ? (
+                <p className="text-muted-foreground">Generating chapter content...</p>
+              ) : chapterDoc ? (
+                <div className="prose dark:prose-invert max-w-none whitespace-pre-wrap">{chapterDoc}</div>
+              ) : (
+                <p className="text-muted-foreground">No content yet.</p>
+              )}
+            </CardContent>
+          </Card>
+
           {/* Table of Contents */}
           <Card className="mb-6">
             <CardContent className="p-6">
